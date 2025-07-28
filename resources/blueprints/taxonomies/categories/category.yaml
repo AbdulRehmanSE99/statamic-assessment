@@ -1,0 +1,16 @@
+title: 'Category'
+sections:
+  main:
+    display: Main
+    fields:
+      - handle: title
+        field:
+          type: text
+          display: 'Title'
+          validate: required
+
+      - handle: description
+        field:
+          type: textarea
+          display: 'Description'
+          rows: 2

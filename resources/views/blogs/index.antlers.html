@@ -1,0 +1,224 @@
+{{ layout }}
+
+{{# Main Content #}}
+<section class="py-12 md:py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div x-data="blogIndex()" class="max-w-7xl mx-auto">
+
+            {{# Category Filter #}}
+            <div class="mb-12">
+                <div class="flex flex-wrap items-center justify-between gap-6 mb-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Filter by Category</h2>
+
+                    <div class="flex flex-wrap gap-6">
+                        <a href="#" @click.prevent="filterByCategory('all')"
+                            :class="selectedCategory === 'all' ? 'text-green-600 font-semibold' : 'text-gray-600 hover:text-gray-900'"
+                            class="text-sm font-medium transition-colors duration-200 no-underline">
+                            All Posts
+                        </a>
+
+                        {{ taxonomy:categories }}
+                        <a href="#" @click.prevent="filterByCategory('{{ slug }}')"
+                            :class="selectedCategory === '{{ slug }}' ? 'text-green-600 font-semibold' : 'text-gray-600 hover:text-gray-900'"
+                            class="text-sm font-medium transition-colors duration-200 no-underline">
+                            {{ title }}
+                        </a>
+                        {{ /taxonomy:categories }}
+                    </div>
+                </div>
+                <div class="border-t border-gray-200 mb-8"></div>
+            </div>
+
+            {{# Blog Grid #}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" x-ref="blogGrid"
+                x-show="filteredPosts.length > 0" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100">
+
+                {{ collection:blogs sort="date:desc" }}
+                <article x-show="isPostVisible('{{ slug }}')" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform translate-y-4"
+                    x-transition:enter-end="opacity-100 transform translate-y-0"
+                    class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                    data-post-slug="{{ slug }}" data-categories="{{ categories }}{{ slug }}{{ /categories }}">
+
+                    {{# Featured Image #}}
+                    {{ if featured_image }}
+                    <div class="aspect-video overflow-hidden">
+                        <img src="{{ featured_image }}" alt="{{ title }}"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    {{ else }}
+                    <div
+                        class="aspect-video bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+                        <div class="text-green-600 text-4xl font-bold">{{ title | substr:0:1 }}</div>
+                    </div>
+                    {{ /if }}
+
+                    {{# Content #}}
+                    <div class="p-6">
+                        {{# Categories #}}
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            {{ categories }}
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                {{ title }}
+                            </span>
+                            {{ /categories }}
+                        </div>
+
+                        {{# Title #}}
+                        <h3
+                            class="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors duration-200">
+                            <a href="{{ url }}" class="block">{{ title }}</a>
+                        </h3>
+
+                        {{# Excerpt #}}
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            {{ if excerpt }}
+                            {{ excerpt }}
+                            {{ else }}
+                            {{ content | strip_tags | substr:0:150 }}...
+                            {{ /if }}
+                        </p>
+
+                        {{# Meta #}}
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            {{ if author }}
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-xs font-bold">{{ author:name | substr:0:1 }}</span>
+                                </div>
+                                <span>{{ author:name }}</span>
+                            </div>
+                            {{ /if }}
+                            <span>{{ date format="M j, Y" }}</span>
+                        </div>
+
+                        {{# Read More #}}
+                        <a href="{{ url }}"
+                            class="text-green-600 hover:text-green-700 font-medium transition-colors duration-200">
+                            Read More →
+                        </a>
+                    </div>
+                </article>
+                {{ /collection:blogs }}
+            </div>
+
+            {{# No Results #}}
+            <div x-show="filteredPosts.length === 0" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="text-center py-16">
+                <div class="max-w-md mx-auto">
+                    <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">No posts found</h3>
+                    <p class="text-gray-600 mb-6">Try adjusting your filters or check back later for new content.</p>
+                    <a href="#" @click.prevent="clearFilters()"
+                        class="inline-block px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors duration-200 no-underline">
+                        View All Posts
+                    </a>
+                </div>
+            </div>
+
+            {{# Load More Button #}}
+            <div x-show="hasMorePosts && filteredPosts.length > 0" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="text-center mt-12">
+                <button @click="loadMore()"
+                    class="inline-block px-8 py-4 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-all duration-200">
+                    <span x-text="loading ? 'Loading...' : 'Load More Posts'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{# Newsletter Section #}}
+<section class="bg-white py-16">
+    <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Stay Updated</h2>
+            <p class="text-xl text-gray-600 mb-8">Get the latest insights and tips delivered to your inbox</p>
+            <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" placeholder="Enter your email"
+                    class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <button
+                    class="px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors duration-200">
+                    Subscribe
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function blogIndex() {
+        return {
+            selectedCategory: 'all',
+            posts: [],
+            filteredPosts: [],
+            visiblePosts: 6,
+            loading: false,
+            hasMorePosts: true,
+
+            init() {
+                this.loading = false;
+                this.initializePosts();
+            },
+
+            initializePosts() {
+                // Get all blog posts from the server-rendered content
+                const articles = document.querySelectorAll('article[data-post-slug]');
+                this.posts = Array.from(articles).map(article => {
+                    const slug = article.getAttribute('data-post-slug');
+                    const categories = article.getAttribute('data-categories')?.split(',').filter(cat => cat.trim() !== '') || [];
+                    return { slug, categories };
+                });
+                this.filteredPosts = [...this.posts];
+                this.hasMorePosts = this.filteredPosts.length > this.visiblePosts;
+            },
+
+            filterByCategory(category) {
+                this.selectedCategory = category;
+                this.loading = false;
+
+                if (category === 'all') {
+                    this.filteredPosts = [...this.posts];
+                } else {
+                    this.filteredPosts = this.posts.filter(post => {
+                        return post.categories && post.categories.includes(category);
+                    });
+                }
+
+                this.visiblePosts = 6;
+                this.hasMorePosts = this.filteredPosts.length > this.visiblePosts;
+            },
+
+            clearFilters() {
+                this.selectedCategory = 'all';
+                this.loading = false;
+                this.filteredPosts = [...this.posts];
+                this.visiblePosts = 6;
+                this.hasMorePosts = this.filteredPosts.length > this.visiblePosts;
+            },
+
+            isPostVisible(slug) {
+                const postIndex = this.filteredPosts.findIndex(post => post.slug === slug);
+                return postIndex >= 0 && postIndex < this.visiblePosts;
+            },
+
+                        loadMore() {
+                this.loading = true;
+
+                setTimeout(() => {
+                    this.visiblePosts += 6;
+                    this.hasMorePosts = this.filteredPosts.length > this.visiblePosts;
+                    this.loading = false;
+                }, 1000);
+            }
+        }
+    }
+</script>
