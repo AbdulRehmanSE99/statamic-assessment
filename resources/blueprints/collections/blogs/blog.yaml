@@ -1,6 +1,7 @@
 title: Blog
 tabs:
   main:
+    display: Main
     sections:
       -
         fields:
@@ -9,12 +10,74 @@ tabs:
             field:
               type: text
               required: true
+              validate:
+                - required
           -
             handle: content
             field:
-              type: markdown
+              type: bard
               display: Content
               localizable: true
+              buttons:
+                - h2
+                - h3
+                - bold
+                - italic
+                - unorderedlist
+                - orderedlist
+                - removeformat
+                - quote
+                - anchor
+                - image
+                - table
+                - h1
+                - h4
+                - h5
+                - h6
+                - underline
+                - strikethrough
+                - small
+                - superscript
+                - subscript
+                - code
+                - codeblock
+                - horizontalrule
+                - alignleft
+                - aligncenter
+                - alignright
+                - alignjustify
+              container: assets
+              smart_typography: true
+              remove_empty_nodes: false
+              sets:
+                main:
+                  display: Main
+                  sets:
+                    accordion:
+                      display: Accordion
+                      fields:
+                        -
+                          handle: title
+                          field:
+                            type: text
+                            display: Title
+                        -
+                          handle: content
+                          field:
+                            type: textarea
+                            display: Content
+                    icon_list:
+                      display: 'Icon List'
+                      fields:
+                        -
+                          handle: icon
+                          field:
+                            type: text
+                            instructions: 'e.g. lucide-check or heroicons classes'
+                        -
+                          handle: text
+                          field:
+                            type: text
           -
             handle: featured_image
             field:
@@ -22,7 +85,7 @@ tabs:
               container: assets
               folder: blog
               max_files: 1
-              display: Featured Image
+              display: 'Featured Image'
               localizable: true
           -
             handle: excerpt
@@ -43,7 +106,8 @@ tabs:
             handle: categories
             field:
               type: terms
-              taxonomies: [categories]
+              taxonomies:
+                - categories
               display: Categories
               localizable: true
               mode: select
@@ -51,7 +115,8 @@ tabs:
             handle: tags
             field:
               type: terms
-              taxonomies: [tags]
+              taxonomies:
+                - tags
               display: Tags
               localizable: true
               mode: select
@@ -62,6 +127,7 @@ tabs:
               display: Template
               localizable: true
   sidebar:
+    display: Sidebar
     sections:
       -
         fields:
@@ -71,3 +137,11 @@ tabs:
               type: slug
               localizable: true
               validate: 'max:200'
+          -
+            handle: date
+            field:
+              type: date
+              required: true
+              default: now
+              validate:
+                - required

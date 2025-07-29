@@ -6,7 +6,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title ?? site:name }}</title>
+
+    <!-- Meta tags for better SEO and social sharing -->
+    <meta name="description" content="{{ excerpt ?? 'A comprehensive technical assessment showcasing modern web development skills with Statamic, Alpine.js, and Tailwind CSS.' }}">
+    <meta name="keywords" content="Statamic, Laravel, Alpine.js, Tailwind CSS, Web Development">
+    <meta name="author" content="Jouwklimaatkast">
+
+    <!-- Open Graph tags for social media -->
+    <meta property="og:title" content="{{ title ?? site:name }}">
+    <meta property="og:description" content="{{ excerpt ?? 'A comprehensive technical assessment showcasing modern web development skills.' }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ current_url }}">
+    {{ if featured_image }}
+    <meta property="og:image" content="{{ featured_image }}">
+    {{ /if }}
+
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title ?? site:name }}">
+    <meta name="twitter:description" content="{{ excerpt ?? 'A comprehensive technical assessment showcasing modern web development skills.' }}">
+    {{ if featured_image }}
+    <meta name="twitter:image" content="{{ featured_image }}">
+    {{ /if }}
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- Primary CSS via Vite -->
     {{ vite src="resources/css/site.css|resources/js/site.js" }}
+
+    <!-- Fallback CSS if Vite fails -->
+    <!-- <link rel="stylesheet" href="/assets/css/site.css" media="print" onload="this.media='all'"> -->
+    <noscript><link rel="stylesheet" href="/assets/css/site.css"></noscript>
+
     <!-- CDN Fallback for Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -30,9 +62,118 @@
             }
         }
     </script>
-    <!-- Basic CSS fallback -->
-    <style>
 
+    <!-- Critical CSS fallback for immediate styling -->
+    <style>
+        /* Critical fallback styles for immediate rendering */
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.5;
+            color: #374151;
+            background-color: #f9fafb;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .bg-white { background-color: white; }
+        .bg-gray-50 { background-color: #f9fafb; }
+        .text-gray-600 { color: #4b5563; }
+        .text-gray-800 { color: #1f2937; }
+        .text-gray-900 { color: #111827; }
+        .text-green-600 { color: #16a34a; }
+
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .border-b { border-bottom-width: 1px; }
+        .border-gray-200 { border-color: #e5e7eb; }
+
+        .sticky { position: sticky; }
+        .top-0 { top: 0; }
+        .z-50 { z-index: 50; }
+
+        .min-h-screen { min-height: 100vh; }
+        .flex-1 { flex: 1 1 0%; }
+        .flex-col { flex-direction: column; }
+
+        .h-14 { height: 3.5rem; }
+        .h-16 { height: 4rem; }
+        .w-8 { width: 2rem; }
+        .h-8 { height: 2rem; }
+
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-x-6 > * + * { margin-left: 1.5rem; }
+        .space-x-8 > * + * { margin-left: 2rem; }
+
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-base { font-size: 1rem; line-height: 1.5rem; }
+
+        .font-bold { font-weight: 700; }
+        .font-medium { font-weight: 500; }
+
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+
+        .bg-gradient-to-r { background: linear-gradient(to right, var(--tw-gradient-stops)); }
+        .from-green-600 { --tw-gradient-from: #16a34a; }
+        .to-emerald-600 { --tw-gradient-to: #059669; }
+
+        .text-white { color: white; }
+        .text-gray-600 { color: #4b5563; }
+        .text-gray-900 { color: #111827; }
+
+        .transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; }
+        .duration-200 { transition-duration: 200ms; }
+
+        .hover\\:text-gray-900:hover { color: #111827; }
+        .hover\\:text-gray-600:hover { color: #4b5563; }
+
+        .hidden { display: none; }
+        .block { display: block; }
+
+        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-auto { margin-top: auto; }
+
+        .text-center { text-align: center; }
+        .text-xs { font-size: 0.75rem; line-height: 1rem; }
+        .text-gray-500 { color: #6b7280; }
+
+        /* Responsive utilities */
+        @media (min-width: 640px) {
+            .sm\\:block { display: block; }
+            .sm\\:hidden { display: none; }
+        }
+
+        @media (min-width: 768px) {
+            .md\\:flex { display: flex; }
+            .md\\:hidden { display: none; }
+            .md\\:h-16 { height: 4rem; }
+            .md\\:py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+            .md\\:text-base { font-size: 1rem; line-height: 1.5rem; }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+            .lg\\:space-x-8 > * + * { margin-left: 2rem; }
+        }
+
+        /* Alpine.js fallback */
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 

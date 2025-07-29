@@ -32,7 +32,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span class="break-words">{{ content | read_time }} min read</span>
+                <span class="break-words">5 min read</span>
             </div>
         </div>
     </div>
@@ -55,19 +55,25 @@
                     </div>
                     {{ /if }}
 
-                    <article class="prose prose-sm md:prose-lg prose-green max-w-none">
-                        {{# Excerpt #}}
-                        {{ if excerpt }}
-                        <div class="bg-green-50 border-l-4 border-green-500 p-4 md:p-6 mb-6 lg:mb-8 rounded-r-lg">
-                            <p class="text-base md:text-lg text-gray-800 font-medium italic">{{ excerpt }}</p>
-                        </div>
-                        {{ /if }}
+                    {{ if excerpt }}
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 md:p-6 mb-6 lg:mb-8 rounded-r-lg">
+                        <p class="text-base md:text-lg text-gray-800 font-medium italic">{{ excerpt }}</p>
+                    </div>
+                    {{ /if }}
 
-                        {{# Content #}}
-                        <div class="text-gray-900 leading-relaxed break-words overflow-x-auto">
-                            {{ content }}
-                        </div>
-                    </article>
+                    <!-- Bard Content with Targeted Styling -->
+                    {{ content }}
+                    {{ if type == "accordion" }}
+                    <!-- Accordion Set -->
+                    {{ partial:components/accordion title="{{ title }}" content="{{ content }}" group="bard-accordions" }}
+                    {{ else }}
+                    <!-- Normal block rendering with targeted styling -->
+                    <div class="bard-content my-6">
+                        {{ text }}
+                    </div>
+                    {{ /if }}
+                    {{ /content }}
+
                 </div>
 
                 {{# Right Column - Sidebar #}}
@@ -113,8 +119,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    <span class="text-gray-700 text-sm md:text-base">{{ content | read_time }} min
-                                        read</span>
+                                    <span class="text-gray-700 text-sm md:text-base">5 min read</span>
                                 </div>
                             </div>
                         </div>
@@ -267,7 +272,7 @@
                             {{ if excerpt }}
                             {{ excerpt }}
                             {{ else }}
-                            {{ content | strip_tags | substr:0:120 }}...
+                            Read more about this topic...
                             {{ /if }}
                         </p>
 
