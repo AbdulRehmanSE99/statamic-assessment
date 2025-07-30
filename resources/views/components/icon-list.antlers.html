@@ -1,0 +1,45 @@
+{{# Icon List Component #}}
+{{# Usage: {{ partial:components/icon-list title="List Title" items="items" }} #}}
+
+<div class="my-8">
+    {{ if title }}
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ title }}</h3>
+    {{ /if }}
+
+    {{ if items }}
+        <div class="space-y-4">
+            {{ items }}
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0 mt-1">
+                        {{ if icon }}
+                            {{ if icon | contains: '<svg' }}
+                                {{# Handle SVG icons #}}
+                                <div class="w-5 h-5 text-blue-500">
+                                    {{ icon }}
+                                </div>
+                            {{ else }}
+                                {{# Handle FontAwesome or other icon classes #}}
+                                <i class="{{ icon }} w-5 h-5 text-blue-500"></i>
+                            {{ /if }}
+                        {{ else }}
+                            {{# Default checkmark icon #}}
+                            <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        {{ /if }}
+                    </div>
+
+                    <div class="flex-1">
+                        {{ if text }}
+                            <div class="font-medium text-gray-800">{{ text }}</div>
+                        {{ /if }}
+
+                        {{ if description }}
+                            <div class="mt-1 text-sm text-gray-600">{{ description }}</div>
+                        {{ /if }}
+                    </div>
+                </div>
+            {{ /items }}
+        </div>
+    {{ /if }}
+</div>

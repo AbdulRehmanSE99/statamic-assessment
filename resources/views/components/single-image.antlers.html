@@ -1,0 +1,18 @@
+{{# Single Image Component #}}
+{{# Usage: {{ partial:components/single-image image="image" alt_text="Alt text" caption="Caption text" }} #}}
+
+<div class="my-8">
+    {{ if image }}
+        <figure class="relative">
+            <img src="{{ image:url }}" 
+                 alt="{{ alt_text ?? image:alt ?? 'Image' }}" 
+                 class="w-full h-auto rounded-lg shadow-lg">
+            
+            {{ if caption }}
+                <figcaption class="mt-2 text-sm text-gray-600 text-center italic">
+                    {{ caption }}
+                </figcaption>
+            {{ /if }}
+        </figure>
+    {{ /if }}
+</div> 

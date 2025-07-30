@@ -66,18 +66,204 @@ tabs:
                           field:
                             type: textarea
                             display: Content
-                    icon_list:
-                      display: 'Icon List'
+                    quote:
+                      display: Quote
                       fields:
                         -
-                          handle: icon
+                          handle: quote_text
                           field:
-                            type: text
-                            instructions: 'e.g. lucide-check or heroicons classes'
+                            type: textarea
+                            display: Quote Text
+                            required: true
                         -
-                          handle: text
+                          handle: author
                           field:
                             type: text
+                            display: Author
+                        -
+                          handle: source
+                          field:
+                            type: text
+                            display: Source
+                    carousel:
+                      display: Carousel
+                      fields:
+                        -
+                          handle: images
+                          field:
+                            type: assets
+                            container: assets
+                            folder: blog
+                            display: Images
+                            max_files: 10
+                        -
+                          handle: autoplay
+                          field:
+                            type: toggle
+                            display: Autoplay
+                            default: true
+                        -
+                          handle: interval
+                          field:
+                            type: integer
+                            display: Interval (seconds)
+                            default: 5
+                    single_image:
+                      display: Single Image
+                      fields:
+                        -
+                          handle: image
+                          field:
+                            type: assets
+                            container: assets
+                            folder: blog
+                            display: Image
+                            max_files: 1
+                            required: true
+                        -
+                          handle: alt_text
+                          field:
+                            type: text
+                            display: Alt Text
+                        -
+                          handle: caption
+                          field:
+                            type: text
+                            display: Caption
+                    card:
+                      display: Card
+                      fields:
+                        -
+                          handle: title
+                          field:
+                            type: text
+                            display: Title
+                            required: true
+                        -
+                          handle: content
+                          field:
+                            type: textarea
+                            display: Content
+                        -
+                          handle: image
+                          field:
+                            type: assets
+                            container: assets
+                            folder: blog
+                            display: Image
+                            max_files: 1
+                        -
+                          handle: link
+                          field:
+                            type: text
+                            display: Link URL
+                    testimonial:
+                      display: Testimonial
+                      fields:
+                        -
+                          handle: quote
+                          field:
+                            type: textarea
+                            display: Quote
+                            required: true
+                        -
+                          handle: author_name
+                          field:
+                            type: text
+                            display: Author Name
+                            required: true
+                        -
+                          handle: author_title
+                          field:
+                            type: text
+                            display: Author Title/Company
+                        -
+                          handle: author_image
+                          field:
+                            type: assets
+                            container: assets
+                            folder: blog
+                            display: Author Image
+                            max_files: 1
+                        -
+                          handle: rating
+                          field:
+                            type: integer
+                            display: Rating (1-5)
+                            min: 1
+                            max: 5
+                    reviews:
+                      display: Reviews
+                      fields:
+                        -
+                          handle: product_name
+                          field:
+                            type: text
+                            display: Product/Service Name
+                            required: true
+                        -
+                          handle: rating
+                          field:
+                            type: integer
+                            display: Overall Rating (1-5)
+                            min: 1
+                            max: 5
+                            required: true
+                        -
+                          handle: pros
+                          field:
+                            type: textarea
+                            display: Pros
+                        -
+                          handle: cons
+                          field:
+                            type: textarea
+                            display: Cons
+                        -
+                          handle: summary
+                          field:
+                            type: textarea
+                            display: Summary
+                        -
+                          handle: product_image
+                          field:
+                            type: assets
+                            container: assets
+                            folder: blog
+                            display: Product Image
+                            max_files: 1
+                    icon_list:
+                      display: Icon List
+                      fields:
+                        -
+                          handle: title
+                          field:
+                            type: text
+                            display: Title
+                        -
+                          handle: items
+                          field:
+                            type: grid
+                            display: List Items
+                            add_row: Add Item
+                            fields:
+                              -
+                                handle: icon
+                                field:
+                                  type: text
+                                  display: Icon (SVG or class name)
+                                  instructions: Enter an SVG icon or CSS class name (e.g., 'fas fa-check' for FontAwesome)
+                              -
+                                handle: text
+                                field:
+                                  type: text
+                                  display: Text
+                                  required: true
+                              -
+                                handle: description
+                                field:
+                                  type: textarea
+                                  display: Description (optional)
           -
             handle: featured_image
             field:
