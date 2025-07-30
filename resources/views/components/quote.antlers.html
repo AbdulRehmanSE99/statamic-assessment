@@ -2,7 +2,7 @@
 {{# Usage: {{ partial:components/quote quote_text="Your quote" author="Author Name" source="Source" }} #}}
 
 <div class="my-8 p-6 bg-gray-50 border-l-4 border-blue-500 rounded-r-lg">
-    <blockquote class="text-lg italic text-gray-800 mb-4">
+    <blockquote class="text-lg italic text-gray-800 mb-4 bard-content">
         "{{ quote_text }}"
     </blockquote>
     {{ if author || source }}
@@ -16,4 +16,4 @@
             {{ /if }}
         </footer>
     {{ /if }}
-</div> 
+</div>

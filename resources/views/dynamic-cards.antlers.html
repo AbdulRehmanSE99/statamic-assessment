@@ -1,0 +1,170 @@
+{{ layout }}
+
+<!-- Swiper JS CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- Font Awesome CSS for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-8 md:py-12">
+    <div class="container mx-auto px-4">
+        <!-- Header with Jouwklimaatkast.nl branding -->
+        <div class="text-center mb-8 md:mb-16">
+            <div class="mb-4 md:mb-6">
+                <h1
+                    class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+                    Jouwklimaatkast.nl
+                </h1>
+                <div class="w-16 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto mb-4 md:mb-6"></div>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">{{ title }}</h2>
+        </div>
+
+        <!-- Dynamic Content Section - Renders Bard field content with field sets -->
+        <section class="mb-8 md:mb-16">
+            <div class="prose prose-sm md:prose-lg max-w-none">
+                {{# Render Bard field content with conditions for each field set type #}}
+                {{ content }}
+                {{ if type == "text" }}
+                <div class="mb-6 bard-content">
+                    {{ text }}
+                </div>
+                {{ /if }}
+
+                {{# Accordion Component #}}
+                {{ if type == "accordion" }}
+                {{# Check if this is a grouped accordion #}}
+                {{ if group }}
+                {{# Start group wrapper if this is the first accordion in the group #}}
+                {{ if index == 0 || !prev:group || prev:group != group }}
+                <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+                    {{ /if }}
+                    {{ partial:components/accordion title="{{ title }}" content="{{ content }}" group="{{ group }}" }}
+                    {{# End group wrapper if this is the last accordion in the group #}}
+                    {{ if !next:group || next:group != group }}
+                </div>
+                {{ /if }}
+                {{ else }}
+                {{# Single accordion #}}
+                {{ partial:components/accordion title="{{ title }}" content="{{ content }}" group="{{ group }}" }}
+                {{ /if }}
+                {{ /if }}
+
+                {{# Quote Component #}}
+                {{ if type == "quote" }}
+                {{ partial:components/quote quote_text="{{ quote_text }}" author="{{ author }}" source="{{ source }}" }}
+                {{ /if }}
+
+                {{# Carousel Component #}}
+                {{ if type == "carousel" }}
+                {{ partial:components/carousel images="{{ images }}" autoplay="{{ autoplay }}" interval="{{ interval }}"
+                }}
+                {{ /if }}
+
+                {{# Single Image Component #}}
+                {{ if type == "single_image" }}
+                {{ partial:components/single-image image="{{ image }}" alt_text="{{ alt_text }}" caption="{{ caption }}"
+                }}
+                {{ /if }}
+
+                {{# Card Component #}}
+                {{ if type == "card" }}
+                {{ partial:components/card title="{{ title }}" content="{{ content }}" image="{{ image }}" link="{{ link
+                }}" }}
+                {{ /if }}
+
+                {{# Testimonial Component #}}
+                {{ if type == "testimonial" }}
+                {{ partial:components/testimonial quote="{{ quote }}" author_name="{{ author_name }}" author_title="{{
+                author_title }}" author_image="{{ author_image }}" rating="{{ rating }}" }}
+                {{ /if }}
+
+                {{# Reviews Component #}}
+                {{ if type == "reviews" }}
+                {{ partial:components/reviews product_name="{{ product_name }}" rating="{{ rating }}" pros="{{ pros }}"
+                cons="{{ cons }}" summary="{{ summary }}" product_image="{{ product_image }}" }}
+                {{ /if }}
+
+                {{# Icon List Component #}}
+                {{ if type == "icon_list" }}
+                {{ partial:components/icon-list title="{{ title }}" items="{{ items }}" }}
+                {{ /if }}
+                {{ /content }}
+            </div>
+        </section>
+
+        <!-- Usage Instructions -->
+        <section class="mb-8 md:mb-16">
+            <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4 md:mb-6">How to Use These Components</h2>
+            <div class="bg-white rounded-xl shadow-xl p-4 md:p-8 border border-gray-100">
+                <div class="prose max-w-none">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Getting Started</h3>
+                    <ol class="list-decimal list-inside space-y-1 md:space-y-2 text-sm md:text-base text-gray-700">
+                        <li>Go to the Statamic Control Panel</li>
+                        <li>Navigate to Pages → Dynamic Cards Showcase</li>
+                        <li>Edit the content using the Bard field editor</li>
+                        <li>Click "Add Set" to add new components</li>
+                        <li>Choose from: Accordion, Quote, Carousel, Card, Testimonial, Reviews, or Icon List</li>
+                        <li>Fill in the required fields and save</li>
+                    </ol>
+
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mt-4 md:mt-6 mb-3 md:mb-4">Available Field Sets</h3>
+                    <ul class="list-disc list-inside space-y-1 md:space-y-2 text-sm md:text-base text-gray-700">
+                        <li><strong>Accordion:</strong> Collapsible content sections with smooth animations</li>
+                        <li><strong>Quote:</strong> Highlight important quotes with author attribution</li>
+                        <li><strong>Carousel:</strong> Interactive image carousel with autoplay and navigation</li>
+                        <li><strong>Card:</strong> Display content in card format with optional images and links</li>
+                        <li><strong>Testimonial:</strong> Showcase customer testimonials with ratings and author
+                            information</li>
+                        <li><strong>Reviews:</strong> Comprehensive product or service reviews with pros, cons, and
+                            ratings</li>
+                        <li><strong>Icon List:</strong> Display lists with custom icons for better visual hierarchy</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    // Initialize Swiper for any carousels added through Bard field
+    document.addEventListener('DOMContentLoaded', function () {
+        const carousels = document.querySelectorAll('.swiper');
+        carousels.forEach(function (carousel) {
+            new Swiper(carousel, {
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: carousel.querySelector('.swiper-pagination'),
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: carousel.querySelector('.swiper-button-next'),
+                    prevEl: carousel.querySelector('.swiper-button-prev'),
+                },
+                effect: 'slide',
+                speed: 600,
+                grabCursor: true,
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                    },
+                    768: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    },
+                    1024: {
+                        slidesPerView: 1,
+                        spaceBetween: 40,
+                    },
+                },
+            });
+        });
+    });
+</script>

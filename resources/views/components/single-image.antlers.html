@@ -3,16 +3,14 @@
 
 <div class="my-8">
     {{ if image }}
-        <figure class="relative">
-            <img src="{{ image:url }}" 
-                 alt="{{ alt_text ?? image:alt ?? 'Image' }}" 
-                 class="w-full h-auto rounded-lg shadow-lg">
-            
-            {{ if caption }}
-                <figcaption class="mt-2 text-sm text-gray-600 text-center italic">
-                    {{ caption }}
-                </figcaption>
-            {{ /if }}
-        </figure>
+    <figure class="relative">
+        <img src="{{ image }}" alt="{{ alt_text ?? 'Image' }}" class="w-full h-auto rounded-lg shadow-lg">
+
+        {{ if caption }}
+        <figcaption class="mt-2 text-sm text-gray-600 text-center italic">
+            {{ caption }}
+        </figcaption>
+        {{ /if }}
+    </figure>
     {{ /if }}
-</div> 
+</div>

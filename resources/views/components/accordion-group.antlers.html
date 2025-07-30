@@ -1,0 +1,8 @@
+{{# Accordion Group Component #}}
+{{# Usage: {{ partial:components/accordion-group accordions="{{ accordions }}" group_name="{{ group_name }}" }} #}}
+
+<div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+    {{ accordions }}
+        {{ partial:components/accordion title="{{ title }}" content="{{ content }}" group="{{ group_name }}" }}
+    {{ /accordions }}
+</div>
