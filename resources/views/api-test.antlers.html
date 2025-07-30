@@ -1,0 +1,304 @@
+{{ layout }}
+
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-green-50" x-data="apiTest()">
+    <!-- Full Screen Mode -->
+    <div x-show="!isFullScreen" class="py-8 md:py-12">
+        <div class="container mx-auto px-4">
+            <!-- Header -->
+            <div class="text-center mb-8 md:mb-16">
+                <div class="mb-4 md:mb-6">
+                    <h1 class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+                        Jouwklimaatkast.nl
+                    </h1>
+                    <div class="w-16 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto mb-4 md:mb-6"></div>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">{{ title }}</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Test the available API endpoints for blogs, categories, and collections</p>
+            </div>
+
+            <!-- Side-by-Side Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+                <!-- Left Side - API Endpoints -->
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold text-gray-800">API Endpoints</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Blogs API -->
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-800">Blogs API</h4>
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">GET</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3">Retrieve all blog posts with metadata</p>
+                                <code class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700 font-mono block mb-3">/api/blogs</code>
+                                <button @click="testAPI('blogs')"
+                                        class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors duration-200">
+                                    Test Endpoint
+                                </button>
+                            </div>
+
+                            <!-- Categories API -->
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-800">Categories API</h4>
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">GET</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3">Get all available categories</p>
+                                <code class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700 font-mono block mb-3">/api/categories</code>
+                                <button @click="testAPI('categories')"
+                                        class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors duration-200">
+                                    Test Endpoint
+                                </button>
+                            </div>
+
+                            <!-- Collections Status -->
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-800">Collections Status</h4>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">GET</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3">Check collections and their status</p>
+                                <code class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700 font-mono block mb-3">/api/collections</code>
+                                <button @click="testAPI('collections')"
+                                        class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors duration-200">
+                                    Test Endpoint
+                                </button>
+                            </div>
+
+                            <!-- Single Blog Post -->
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-800">Single Blog Post</h4>
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">GET</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3">Get a specific blog post by slug</p>
+                                <code class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700 font-mono block mb-3">/api/blogs/{slug}</code>
+                                <div class="flex gap-2">
+                                    <input type="text" x-model="blogSlug" placeholder="Enter blog slug"
+                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <button @click="testSingleBlog()"
+                                            class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors duration-200">
+                                        Test
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Results -->
+                <div class="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col min-h-0">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-gray-800">API Test Results</h3>
+                        <div class="flex items-center gap-3">
+                            <button @click="toggleFullScreen()"
+                                    class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                                </svg>
+                                Full Screen
+                            </button>
+                            <button @click="clearResults()"
+                                    class="px-4 py-2 bg-gray-600 text-white rounded-lg text-sm hover:bg-gray-700 transition-colors duration-200">
+                                Clear Results
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div x-show="loading" class="flex-1 flex items-center justify-center">
+                        <div class="inline-flex items-center">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span class="text-gray-600">Testing API endpoint...</span>
+                        </div>
+                    </div>
+
+                    <!-- Results Display -->
+                    <div x-show="!loading && results.length > 0" class="flex-1 overflow-y-auto space-y-4 min-h-0">
+                        <template x-for="(result, index) in results" :key="index">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="font-semibold text-gray-800" x-text="result.endpoint"></h4>
+                                    <span class="px-2 py-1 rounded text-xs font-medium"
+                                          :class="result.status === 200 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                                          x-text="result.status"></span>
+                                </div>
+                                <div class="bg-gray-50 rounded p-3 overflow-y-auto">
+                                    <pre class="text-xs text-gray-700" x-text="JSON.stringify(result.data, null, 2)"></pre>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- No Results -->
+                    <div x-show="!loading && results.length === 0" class="flex-1 flex items-center justify-center text-gray-500">
+                        <div class="text-center">
+                            <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <p>No API tests have been run yet. Click on any endpoint to test it.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Screen Results View -->
+    <div x-show="isFullScreen" class="h-screen bg-white">
+        <div class="h-full flex flex-col">
+            <!-- Full Screen Header -->
+            <div class="bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <h2 class="text-xl font-semibold text-gray-800">API Test Results</h2>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">Full Screen Mode</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button @click="clearResults()"
+                            class="px-4 py-2 bg-gray-600 text-white rounded-lg text-sm hover:bg-gray-700 transition-colors duration-200">
+                        Clear Results
+                    </button>
+                    <button @click="toggleFullScreen()"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Exit Full Screen
+                    </button>
+                </div>
+            </div>
+
+            <!-- Full Screen Content -->
+            <div class="flex-1 p-6 overflow-hidden">
+                <!-- Loading State -->
+                <div x-show="loading" class="h-full flex items-center justify-center">
+                    <div class="inline-flex items-center">
+                        <svg class="animate-spin -ml-1 mr-3 h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span class="text-gray-600 text-lg">Testing API endpoint...</span>
+                    </div>
+                </div>
+
+                <!-- Results Display -->
+                <div x-show="!loading && results.length > 0" class="h-full overflow-y-auto space-y-6">
+                    <template x-for="(result, index) in results" :key="index">
+                        <div class="bg-white border border-gray-200 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800" x-text="result.endpoint"></h3>
+                                <span class="px-3 py-1 rounded text-sm font-medium"
+                                      :class="result.status === 200 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                                      x-text="result.status"></span>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 max-h-96 overflow-y-auto">
+                                <pre class="text-sm text-gray-700" x-text="JSON.stringify(result.data, null, 2)"></pre>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- No Results -->
+                <div x-show="!loading && results.length === 0" class="h-full flex items-center justify-center text-gray-500">
+                    <div class="text-center">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <p class="text-lg">No API tests have been run yet.</p>
+                        <p class="text-sm mt-2">Switch back to normal mode to test endpoints.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function apiTest() {
+        return {
+            loading: false,
+            results: [],
+            blogSlug: '',
+            isFullScreen: false,
+
+            async testAPI(endpoint) {
+                this.loading = true;
+
+                try {
+                    const response = await fetch(`/api/${endpoint}`);
+                    const data = await response.json();
+
+                    this.results.unshift({
+                        endpoint: `${endpoint.toUpperCase()} API`,
+                        status: response.status,
+                        data: data
+                    });
+                } catch (error) {
+                    this.results.unshift({
+                        endpoint: `${endpoint.toUpperCase()} API`,
+                        status: 'Error',
+                        data: { error: error.message }
+                    });
+                }
+
+                this.loading = false;
+            },
+
+            async testSingleBlog() {
+                if (!this.blogSlug.trim()) {
+                    alert('Please enter a blog slug');
+                    return;
+                }
+
+                this.loading = true;
+
+                try {
+                    const response = await fetch(`/api/blogs/${this.blogSlug.trim()}`);
+                    const data = await response.json();
+
+                    this.results.unshift({
+                        endpoint: `Single Blog: ${this.blogSlug}`,
+                        status: response.status,
+                        data: data
+                    });
+                } catch (error) {
+                    this.results.unshift({
+                        endpoint: `Single Blog: ${this.blogSlug}`,
+                        status: 'Error',
+                        data: { error: error.message }
+                    });
+                }
+
+                this.loading = false;
+            },
+
+            clearResults() {
+                this.results = [];
+            },
+
+            toggleFullScreen() {
+                this.isFullScreen = !this.isFullScreen;
+
+                if (this.isFullScreen) {
+                    // Hide the main navigation when in full screen
+                    const header = document.querySelector('header');
+                    if (header) {
+                        header.style.display = 'none';
+                    }
+                } else {
+                    // Show the main navigation when exiting full screen
+                    const header = document.querySelector('header');
+                    if (header) {
+                        header.style.display = 'block';
+                    }
+                }
+            }
+        }
+    }
+</script>
